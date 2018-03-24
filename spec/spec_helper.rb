@@ -1,5 +1,10 @@
 require "bundler/setup"
 require "kbt"
+module Kbt
+  def self.templates_folder
+    Pathname.new(File.expand_path('./templates', __FILE__))
+  end
+end
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
