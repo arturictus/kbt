@@ -20,8 +20,10 @@ module Kbt
 
     def overrides
       case version
-      when 'apps/v1'
+      when 'apps/v1', 'apps/v1beta2'
         v1
+      when 'extensions/v1beta1', 'apps/v1beta1'
+        v1beta1
       else
         raise 'version not recognised'
       end
@@ -42,13 +44,31 @@ module Kbt
           'selector' => {
             'matchLabels' => labels
           },
-          'template' => {
-            'metadata' => { 'labels' => labels },
-            'spec' => { 'containers' => containers.map(&:to_h) }
-          }
+          'template' => template
         }
       }
     end
 
+    def template
+      {
+        'metadata' => { 'labels' => labels },
+        'spec' => { 'containers' => containers.map(&:to_h) }
+      }
+      # TODO add terminationGracePeriodSeconds
+      # TODO add volumes
+    end
+
+    def v1beta1
+      {
+        "metadata" => {
+          "name" => name,
+          "labels" => labels
+        },
+        "spec" => {
+          'replicas' => replicas,
+          'template' => template
+        }
+      }
+    end
   end
 end

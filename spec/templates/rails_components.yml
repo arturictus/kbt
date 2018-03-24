@@ -1,0 +1,71 @@
+envs:
+  prod:
+    - name: RAILS_ENV
+      value: production
+  stag:
+    - name: RAILS_ENV
+      value: staging
+
+volumes:
+  prod_secrets:
+    name: secrets
+    secret:
+      secretName: prod-secrets
+  stag_secrets:
+    name: secrets
+    secret:
+      secretName: stag-secrets
+
+containers:
+  web:
+    name: rails
+    image: rails:latest
+    env:
+      - name: RAILS_ENV
+        value: production
+    command:
+      - bundle
+      - exec
+      - rails
+      - server
+    ports:
+      - containerPort: 80
+    volumeMounts:
+      - name: secrets
+        mountPath: /home/app/config/secrets/
+        readOnly: true
+    livenessProbe:
+      httpGet:
+        path: /_health
+        port: 80
+      initialDelaySeconds: 40
+      timeoutSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /_health
+        port: 80
+      initialDelaySeconds: 40
+      timeoutSeconds: 30
+    resources:
+      limits:
+        memory: 2Gi
+      requests:
+        memory: 1.5Gi
+  sidekiq:
+    name: sidekiq
+    image: rails:latest
+    env:
+      - name: RAILS_ENV
+        value: production
+    command:
+      - bundle
+      - exec
+      - sidekiq
+    volumeMounts:
+      - name: secrets
+        mountPath: /home/app/config/secrets/
+        readOnly: true
+    lifecycle:
+      preStop:
+        exec:
+          command: ["bundle", "exec", "sidekiqctl", "quiet"]
