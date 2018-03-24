@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Artur Panyach"]
   spec.email         = ["arturictus@gmail.com"]
 
-  spec.summary       = %q{Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{Write a longer description or delete this line.}
+  spec.summary       = %q{Kubernetes templating engine for Ruby.}
+  spec.description   = %q{Kubernetes templating engine for Ruby.}
   spec.homepage      = "https://github.com/arturictus/kbt"
   spec.license       = "MIT"
 
