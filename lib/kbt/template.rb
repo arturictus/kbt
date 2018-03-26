@@ -1,10 +1,11 @@
 require 'yaml'
 module Kbt
   class Template
-    attr_reader :file_path, :key
-    def initialize(file_path, key = nil)
+    attr_reader :file_path, :key, :opts
+    def initialize(file_path, key = nil, opts = {})
       @file_path = get_file_path(file_path)
       @key = key
+      @opts = opts
     end
 
     def value
