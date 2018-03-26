@@ -1,7 +1,7 @@
 require 'spec_helper'
 module Kbt
   describe 'rails deployment' do
-    let(:path) { Kbt.templates_folder }
+    let(:path) { templates_folder }
     let(:template) { path.join('rails') }
     let(:volume) do
       # Volume.new(template: Template.new(path.join('rails_components'), 'volumes.prod_secrets'))
@@ -44,6 +44,7 @@ module Kbt
       expect(spec.fetch('replicas')).to eq 2
       expect(template_spec.fetch('containers').first).to eq container.to_h
       expect(template_spec.fetch('terminationGracePeriodSeconds')).to eq 40
+      expect(template_spec.fetch('volumes').first.fetch('name')).to eq 'prod-secrets-template'
     end
   end
 end

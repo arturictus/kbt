@@ -11,6 +11,7 @@ module Kbt
   end
 end
 
+require 'kbt/to_hash'
 require 'kbt/environment'
 require 'kbt/template'
 require 'kbt/container'

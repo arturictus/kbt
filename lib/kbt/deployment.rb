@@ -5,7 +5,8 @@ module Kbt
                 :replicas,
                 :name,
                 :labels,
-                :template_overrides
+                :template_overrides,
+                :volumes
 
     def initialize(args = {})
       @template = args.fetch(:template)
@@ -14,6 +15,7 @@ module Kbt
       @containers = args.fetch(:containers)
       @replicas = args[:replicas] || 1
       @template_overrides = args[:overrides] || {}
+      @volumes = args[:volumes]
     end
 
     def to_h
@@ -64,10 +66,10 @@ module Kbt
     end
 
     def spec
-      {
-        'containers' => containers.map(&:to_h)
-      }.merge(template_overrides)
-      # TODO add volumes
+      h = { 'containers' => containers.map(&:to_h)}
+      h = h.merge(template_overrides)
+      h = h.merge({ 'volumes' => volumes.map(&:to_h) }) if volumes
+      h
     end
 
     def v1beta1

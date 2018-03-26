@@ -1,0 +1,7 @@
+envs:
+  prod:
+    - name: RAILS_ENV
+      value: production
+  stag:
+    - name: RAILS_ENV
+      value: staging

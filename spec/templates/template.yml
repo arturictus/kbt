@@ -1,0 +1,17 @@
+envs:
+  prod:
+    - name: RAILS_ENV
+      value: production
+  stag:
+    - name: RAILS_ENV
+      value: staging
+
+volumes:
+  prod_secrets:
+    name: prod-secrets-template
+    secret:
+      secretName: prod-secrets
+  stag_secrets:
+    name: stag-secrets-template
+    secret:
+      secretName: stag-secrets

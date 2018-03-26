@@ -18,10 +18,8 @@ module Kbt
 
     def format_overrides
       overrides.map do |k, v|
-        [{
-          name: k.to_s,
-          value: v.to_s
-          }]
+        { 'name' => k.to_s,
+          'value' => v.to_s }
       end
     end
 

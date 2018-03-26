@@ -2,10 +2,8 @@ require "bundler/setup"
 require "kbt"
 require 'pry'
 
-module Kbt
-  def self.templates_folder
-    Pathname.new(File.expand_path('./templates', __dir__))
-  end
+def templates_folder
+  Pathname.new(File.expand_path('./templates', __dir__))
 end
 
 RSpec.configure do |config|

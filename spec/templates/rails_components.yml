@@ -8,11 +8,11 @@ envs:
 
 volumes:
   prod_secrets:
-    name: secrets
+    name: prod-secrets-template
     secret:
       secretName: prod-secrets
   stag_secrets:
-    name: secrets
+    name: stag-secrets-template
     secret:
       secretName: stag-secrets
 

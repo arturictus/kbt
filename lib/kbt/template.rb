@@ -12,8 +12,10 @@ module Kbt
       check_yaml!
       return yml unless keys
       keys.inject(yml) do |prev, nxt|
-        if prev.respond_to?(:[]); prev[nxt]
-        else raise WrongKey, "for file: #{file_path} with key: #{key}"
+        begin
+          prev.fetch(nxt)
+        rescue
+          raise WrongKey, "for file: #{file_path} with key: #{key}"
         end
       end
     end
@@ -36,15 +38,15 @@ module Kbt
       false
     end
 
-    def exists?
+    def valid?
       validate!
+      true
     rescue *self.class.errors
       false
     end
-    alias_method :valid?, :exists?
 
     def validate!
-      file_exists? && valid_yaml? && key_exists?
+      check_file! && check_yaml! && value
     end
 
     private

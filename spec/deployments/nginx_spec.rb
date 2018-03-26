@@ -1,7 +1,7 @@
 require 'spec_helper'
 module Kbt
   describe 'nginx deployment' do
-    let(:path) { Kbt.templates_folder }
+    let(:path) { templates_folder }
     let(:template) { path.join('nginx') }
     let(:container) do
       Container.new(
