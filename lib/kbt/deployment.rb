@@ -1,12 +1,19 @@
 module Kbt
   class Deployment
-    attr_reader :template, :containers, :replicas, :name, :labels
+    attr_reader :template,
+                :containers,
+                :replicas,
+                :name,
+                :labels,
+                :template_overrides
+
     def initialize(args = {})
       @template = args.fetch(:template)
       @name = args.fetch(:name)
       @labels = args.fetch(:labels)
       @containers = args.fetch(:containers)
       @replicas = args[:replicas] || 1
+      @template_overrides = args[:overrides] || {}
     end
 
     def to_h
@@ -44,17 +51,22 @@ module Kbt
           'selector' => {
             'matchLabels' => labels
           },
-          'template' => template
+          'template' => _template
         }
       }
     end
 
-    def template
+    def _template
       {
         'metadata' => { 'labels' => labels },
-        'spec' => { 'containers' => containers.map(&:to_h) }
+        'spec' => spec
       }
-      # TODO add terminationGracePeriodSeconds
+    end
+
+    def spec
+      {
+        'containers' => containers.map(&:to_h)
+      }.merge(template_overrides)
       # TODO add volumes
     end
 
@@ -66,7 +78,7 @@ module Kbt
         },
         "spec" => {
           'replicas' => replicas,
-          'template' => template
+          'template' => _template
         }
       }
     end
